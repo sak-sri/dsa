@@ -23,11 +23,9 @@ int main(){
         int src=pq.top().second;
         int dist=pq.top().first;
         pq.pop();
-        if(visited[src])
-            continue;
         visited[src]=true;
         for(auto it:g[src]){
-            if(dist+it.first<dst[it.second]){
+            if((!visited[it.second]) && (dist+it.first<dst[it.second])){
                 dst[it.second]=dist+it.first;
                 pq.push({dst[it.second],it.second});
             }
