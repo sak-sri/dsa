@@ -19,46 +19,43 @@ public:
     Node* copyRandomList(Node* head) {
         if(head==NULL)
             return NULL;
-        Node *curr=head,*prev=head,*clonedHead=NULL;
+        Node *curr=head,*nex=head->next;
         while(curr){
-            Node *temp=new Node(curr->val);
-            if(!clonedHead)
-                clonedHead=temp;
-            curr=curr->next;
-            prev->next=temp;
-            temp->next=curr;
-            prev=curr;
+            curr->next=new Node(curr->val);
+            curr->next->next=nex;
+            curr=nex;
+            if(nex)
+                nex=nex->next;
         }
-        curr=head;
-        Node *clonedcurr=clonedHead;
-        while(clonedcurr->next){
-            if(curr->random){
-                clonedcurr->random=curr->random->next;
-            }
-                clonedcurr=clonedcurr->next->next;
-                curr=curr->next->next;
+        Node *head1=head,*head2=head->next,*next1=NULL,*next2=NULL;
+        Node *ans=head2;
+        if(head2)
+            next1=head2->next;
+        if(next1)
+            next2=next1->next;
+        while(head2->next){
+            if(head1->random)
+                head2->random=head1->random->next;
+            head1=head2->next;
+            head2=head1->next;
         }
-        if(curr->random)
-            clonedcurr->random=curr->random->next;
-        curr=head;
-        clonedcurr=clonedHead;
-        if(clonedcurr->next){
-            Node *nex=curr->next->next;
-            Node *clonednex=clonedcurr->next->next;
-            while(clonednex->next){
-                clonedcurr->next=clonednex;
-                curr->next=nex;
-                clonedcurr=clonedcurr->next;
-                curr=curr->next;
-                clonednex=clonednex->next->next;
-                nex=nex->next->next;
-            }
-            clonedcurr->next=clonednex;
-            curr->next=nex;
-            nex->next=NULL;
-        }else{
-            curr->next=NULL;
+        if(head1->random)
+            head2->random=head1->random->next;
+        head1=head;
+        head2=head->next;
+        while(head1){
+            head1->next=next1;
+            head1=next1;
+            if(next2)
+                next1=next2->next;
+            head2->next=next2;
+            head2=next2;
+            if(next1)
+                next2=next1->next;
         }
-        return clonedHead;
+        if(head2){
+            head2->next=NULL;
+        }
+        return ans;
     }
 };
