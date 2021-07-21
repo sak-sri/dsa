@@ -1,3 +1,5 @@
+
+
 /* Node structure  used in the program
 
 struct Node{
@@ -18,41 +20,41 @@ struct Node{
     the flattened linked list. */
 Node *flatten(Node *root)
 {
-  if(root==NULL)
-    return NULL;
-  Node *head=root,*headnex=root->next;
-  Node *temp1=head,*temp2=headnex;
-  while(temp2){
-      Node *temp=new Node(-1);
-      while(temp1 && temp2){
-          if(temp1->data<=temp2->data){
-              temp->bottom=temp1;
-              temp1=temp1->bottom;
-              temp=temp->bottom;
-          }else{
-              temp->bottom=temp2;
-              temp2=temp2->bottom;
-              temp=temp->bottom;
-          }
-      }
-      while(temp1){
-          temp->bottom=temp1;
-          temp1=temp1->bottom;
-          temp=temp->bottom;
-      }
-      while(temp2){
-          temp->bottom=temp2;
-          temp2=temp2->bottom;
-          temp=temp->bottom;
-      }
-      if(head->data>headnex->data){
-          head=headnex;
-      }
-      temp1=head;
-      headnex=headnex->next;
-      temp2=headnex;
-  }
-  return head;
-  
+   Node *head1=NULL,*head2=NULL;
+   head1=root;
+   if(head1)
+        head2=head1->next;
+   while(head2){
+       Node *temp1=head1,*temp2=head2;
+       while(head1 && head2){
+           Node *prev1=head1,*prev2=head2;
+           bool val1=false;
+           while(head1 && head2 && (head1->data<=head2->data)){
+               prev1=head1;
+               head1=head1->bottom;
+               val1=true;
+           }
+           if(val1)
+                prev1->bottom=head2;
+           bool val2=false;
+           while(head2 && head1 && (head1->data>=head2->data)){
+               prev2=head2;
+               head2=head2->bottom;
+               val2=true;
+           }
+           if(val2)
+                prev2->bottom=head1;
+       }
+       if(temp1->data<=temp2->data){
+           head1=temp1;
+       }else{
+           head1=temp2;
+       }
+       if(temp2)
+            head2=temp2->next;
+       temp1->next=NULL;
+       temp2->next=NULL;
+   }
+   return head1;
 }
 
